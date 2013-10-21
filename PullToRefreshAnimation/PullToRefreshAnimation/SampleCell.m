@@ -6,26 +6,12 @@
 //  Copyright (c) 2013 Skype. All rights reserved.
 //
 
+
+// This class has nothing to do with the animation, it's just here to make the demo pretty.
+
+
 #import "SampleCell.h"
 
 @implementation SampleCell
-
-- (id)initWithFrame:(CGRect)frame
-{
-    self = [super initWithFrame:frame];
-    if (self) {
-        // Initialization code
-    }
-    return self;
-}
-
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
-{
-    // Drawing code
-}
-*/
 
 @end

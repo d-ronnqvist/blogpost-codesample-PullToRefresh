@@ -6,6 +6,10 @@
 //  Copyright (c) 2013 Skype. All rights reserved.
 //
 
+
+// This class has nothing to do with the animation, it's just here to make the demo pretty.
+
+
 #import "PrimeFlowLayout.h"
 
 @implementation PrimeFlowLayout
