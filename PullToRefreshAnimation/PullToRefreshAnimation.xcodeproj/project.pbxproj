@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		6F245E3E18143C5400D7B823 /* PrimeFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F245E3D18143C5400D7B823 /* PrimeFlowLayout.m */; };
-		6F245E4118143DBE00D7B823 /* DebugLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F245E4018143DBE00D7B823 /* DebugLayer.m */; };
 		6F93D39D180C592B00AF29AC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F93D39C180C592B00AF29AC /* Foundation.framework */; };
 		6F93D39F180C592B00AF29AC /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F93D39E180C592B00AF29AC /* CoreGraphics.framework */; };
 		6F93D3A1180C592B00AF29AC /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F93D3A0180C592B00AF29AC /* UIKit.framework */; };
@@ -16,7 +15,6 @@
 		6F93D3A9180C592B00AF29AC /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F93D3A8180C592B00AF29AC /* main.m */; };
 		6F93D3AD180C592B00AF29AC /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F93D3AC180C592B00AF29AC /* AppDelegate.m */; };
 		6F93D3B0180C592B00AF29AC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6F93D3AE180C592B00AF29AC /* Main.storyboard */; };
-		6F93D3B3180C592B00AF29AC /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F93D3B2180C592B00AF29AC /* ViewController.m */; };
 		6F93D3B5180C592B00AF29AC /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6F93D3B4180C592B00AF29AC /* Images.xcassets */; };
 		6F93D3BC180C592B00AF29AC /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F93D3BB180C592B00AF29AC /* XCTest.framework */; };
 		6F93D3BD180C592B00AF29AC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F93D39C180C592B00AF29AC /* Foundation.framework */; };
@@ -41,8 +39,6 @@
 /* Begin PBXFileReference section */
 		6F245E3C18143C5400D7B823 /* PrimeFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrimeFlowLayout.h; sourceTree = "<group>"; };
 		6F245E3D18143C5400D7B823 /* PrimeFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PrimeFlowLayout.m; sourceTree = "<group>"; };
-		6F245E3F18143DBE00D7B823 /* DebugLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DebugLayer.h; sourceTree = "<group>"; };
-		6F245E4018143DBE00D7B823 /* DebugLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DebugLayer.m; sourceTree = "<group>"; };
 		6F93D399180C592B00AF29AC /* PullToRefreshAnimation.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PullToRefreshAnimation.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6F93D39C180C592B00AF29AC /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		6F93D39E180C592B00AF29AC /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -54,8 +50,6 @@
 		6F93D3AB180C592B00AF29AC /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		6F93D3AC180C592B00AF29AC /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		6F93D3AF180C592B00AF29AC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		6F93D3B1180C592B00AF29AC /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		6F93D3B2180C592B00AF29AC /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		6F93D3B4180C592B00AF29AC /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		6F93D3BA180C592B00AF29AC /* PullToRefreshAnimationTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PullToRefreshAnimationTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6F93D3BB180C592B00AF29AC /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
@@ -133,14 +127,10 @@
 				6F93D3AE180C592B00AF29AC /* Main.storyboard */,
 				6F93D3D3180C718A00AF29AC /* SampleViewController.h */,
 				6F93D3D4180C718A00AF29AC /* SampleViewController.m */,
-				6F245E3F18143DBE00D7B823 /* DebugLayer.h */,
-				6F245E4018143DBE00D7B823 /* DebugLayer.m */,
 				6F245E3C18143C5400D7B823 /* PrimeFlowLayout.h */,
 				6F245E3D18143C5400D7B823 /* PrimeFlowLayout.m */,
 				6F93D3D6180C720A00AF29AC /* SampleCell.h */,
 				6F93D3D7180C720A00AF29AC /* SampleCell.m */,
-				6F93D3B1180C592B00AF29AC /* ViewController.h */,
-				6F93D3B2180C592B00AF29AC /* ViewController.m */,
 				6F93D3B4180C592B00AF29AC /* Images.xcassets */,
 				6F93D3A3180C592B00AF29AC /* Supporting Files */,
 			);
@@ -275,8 +265,6 @@
 			files = (
 				6F93D3D8180C720A00AF29AC /* SampleCell.m in Sources */,
 				6F245E3E18143C5400D7B823 /* PrimeFlowLayout.m in Sources */,
-				6F93D3B3180C592B00AF29AC /* ViewController.m in Sources */,
-				6F245E4118143DBE00D7B823 /* DebugLayer.m in Sources */,
 				6F93D3AD180C592B00AF29AC /* AppDelegate.m in Sources */,
 				6F93D3D5180C718A00AF29AC /* SampleViewController.m in Sources */,
 				6F93D3A9180C592B00AF29AC /* main.m in Sources */,
