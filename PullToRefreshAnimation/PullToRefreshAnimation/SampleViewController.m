@@ -106,6 +106,41 @@
     return write2;
 }
 
+#pragma mark -
+
+/**
+ Two stroked shape layers that form the text 'Load' and 'ing'
+ */
+- (void)setupLoadingIndicator
+{
+    CAShapeLayer *loadShape = [CAShapeLayer layer];
+    loadShape.path = [self loadPath];
+    CAShapeLayer *ingShape  = [CAShapeLayer layer];
+    ingShape.path  = [self ingPath];
+    
+    UIView *loadingIndicator = [[UIView alloc] initWithFrame:CGRectMake(0, -45, 230, 70)];
+    [self.collectionView addSubview:loadingIndicator];
+    self.loadingIndicator = loadingIndicator;
+    
+    for (CAShapeLayer *shape in @[loadShape, ingShape]) {
+        shape.strokeColor = [UIColor blackColor].CGColor;
+        shape.fillColor   = [UIColor clearColor].CGColor;
+        shape.lineCap   = kCALineCapRound;
+        shape.lineJoin  = kCALineJoinRound;
+        shape.lineWidth = 5.0;
+        shape.position = CGPointMake(75, 0);
+        
+        shape.strokeEnd = .0;
+        
+        [loadingIndicator.layer addSublayer:shape];
+    }
+    
+    loadShape.speed = 0; // pull to refresh layer is paused here
+    
+    self.pullToRefreshShape = loadShape;
+    self.loadingShape       = ingShape;
+}
+
 #pragma mark - Loading
 
 /**
@@ -155,41 +190,6 @@
         
     });
     
-}
-
-#pragma mark -
-
-/**
- Two stroked shape layers that form the text 'Load' and 'ing'
- */
-- (void)setupLoadingIndicator
-{
-    CAShapeLayer *loadShape = [CAShapeLayer layer];
-    loadShape.path = [self loadPath];
-    CAShapeLayer *ingShape  = [CAShapeLayer layer];
-    ingShape.path  = [self ingPath];
-    
-    UIView *loadingIndicator = [[UIView alloc] initWithFrame:CGRectMake(0, -45, 230, 70)];
-    [self.collectionView addSubview:loadingIndicator];
-    self.loadingIndicator = loadingIndicator;
-    
-    for (CAShapeLayer *shape in @[loadShape, ingShape]) {
-        shape.strokeColor = [UIColor blackColor].CGColor;
-        shape.fillColor   = [UIColor clearColor].CGColor;
-        shape.lineCap   = kCALineCapRound;
-        shape.lineJoin  = kCALineJoinRound;
-        shape.lineWidth = 5.0;
-        shape.position = CGPointMake(75, 0);
-        
-        shape.strokeEnd = .0;
-        
-        [loadingIndicator.layer addSublayer:shape];
-    }
-    
-    loadShape.speed = 0; // pull to refresh layer is paused here
-    
-    self.pullToRefreshShape = loadShape;
-    self.loadingShape       = ingShape;
 }
 
 #pragma mark - Collection View methods
