@@ -15,10 +15,7 @@
 /** The sample data (not related to the animation) */
 @property (strong) NSArray *primes;
 
-/** The layer that is animated as the user pulls down */
-@property (strong) CAShapeLayer *pullToRefreshShape;
-
-/** The layer that is animated as the app is loading more data */
+/** The layer that is animated as the user pulls down and as the app is loading more data */
 @property (strong) CAShapeLayer *loadingShape;
 
 /** A view that contain both the pull to refresh and loading layers */
@@ -40,8 +37,8 @@
     
     [self setupLoadingIndicator];
     
-    [self.pullToRefreshShape addAnimation:[self pullDownAnimation]
-                                   forKey:@"Write 'Load' as you drag down"];
+    [self.loadingShape addAnimation:[self loadingAnimation]
+                             forKey:@"Write 'Loading' as you pull to refresh"];
     
     [self fetchMoreDataWithCompletion:^{
         self.isLoading = NO;
@@ -51,7 +48,7 @@
 #pragma mark - Pull down
 
 /**
- This is the magic of the entire
+ This is the magic of the entire animation timing control
  */
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
@@ -60,7 +57,7 @@
         CGFloat startLoadingThreshold = 60.0;
         CGFloat fractionDragged       = -offset/startLoadingThreshold;
         
-        self.pullToRefreshShape.timeOffset = MIN(1.0, fractionDragged);
+        self.loadingShape.timeOffset = MIN(1.0, fractionDragged);
         
         if (fractionDragged >= 1.0) {
             [self startLoading];
@@ -71,9 +68,9 @@
 #pragma mark - Animation setup
 
 /**
- This is the animation that is controlled using timeOffset when the user pulls down
+ This is the animation that is controlled using timeOffset when the user pulls down and then continues regularly
  */
-- (CAAnimation *)pullDownAnimation
+- (CAAnimation *)loadingAnimation
 {
     // Text is drawn by stroking the path from 0% to 100%
     CABasicAnimation *writeText = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
@@ -87,58 +84,42 @@
     
     CAAnimationGroup *group = [CAAnimationGroup animation];
     group.duration = 1.0; // For convenience when using timeOffset to control the animation
+    group.duration += 0.4; // For quickly drawing the last letters
+    group.fillMode = kCAFillModeBoth;
+    group.removedOnCompletion = NO;
     group.animations = @[writeText, move];
     
     return group;
 }
 
-/**
- The loading animation is quickly drawing the last the letters (ing)
- */
-- (CAAnimation *)loadingAnimation
-{
-    CABasicAnimation *write2 = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
-    write2.fromValue = @0;
-    write2.toValue   = @1;
-    write2.fillMode = kCAFillModeBoth;
-    write2.removedOnCompletion = NO;
-    write2.duration = 0.4;
-    return write2;
-}
-
 #pragma mark -
 
 /**
- Two stroked shape layers that form the text 'Load' and 'ing'
+ A stroked shape layer that forms the text 'Loading'
  */
 - (void)setupLoadingIndicator
 {
-    CAShapeLayer *loadShape = [CAShapeLayer layer];
-    loadShape.path = [self loadPath];
-    CAShapeLayer *ingShape  = [CAShapeLayer layer];
-    ingShape.path  = [self ingPath];
+    CAShapeLayer *loadingShape = [CAShapeLayer layer];
+    loadingShape.path = [self loadingPath];
     
     UIView *loadingIndicator = [[UIView alloc] initWithFrame:CGRectMake(0, -45, 230, 70)];
     [self.collectionView addSubview:loadingIndicator];
     self.loadingIndicator = loadingIndicator;
     
-    for (CAShapeLayer *shape in @[loadShape, ingShape]) {
-        shape.strokeColor = [UIColor blackColor].CGColor;
-        shape.fillColor   = [UIColor clearColor].CGColor;
-        shape.lineCap   = kCALineCapRound;
-        shape.lineJoin  = kCALineJoinRound;
-        shape.lineWidth = 5.0;
-        shape.position = CGPointMake(75, 0);
-        
-        shape.strokeEnd = .0;
-        
-        [loadingIndicator.layer addSublayer:shape];
-    }
+    loadingShape.strokeColor = [UIColor blackColor].CGColor;
+    loadingShape.fillColor   = [UIColor clearColor].CGColor;
+    loadingShape.lineCap   = kCALineCapRound;
+    loadingShape.lineJoin  = kCALineJoinRound;
+    loadingShape.lineWidth = 5.0;
+    loadingShape.position = CGPointMake(75, 0);
     
-    loadShape.speed = 0; // pull to refresh layer is paused here
+    loadingShape.strokeEnd = .0;
     
-    self.pullToRefreshShape = loadShape;
-    self.loadingShape       = ingShape;
+    [loadingIndicator.layer addSublayer:loadingShape];
+    
+    loadingShape.speed = 0; // pull to refresh layer is paused here
+    
+    self.loadingShape = loadingShape;
 }
 
 #pragma mark - Loading
@@ -150,9 +131,10 @@
 {
     self.isLoading = YES;
     
-    // start the loading animation
-    [self.loadingShape addAnimation:[self loadingAnimation]
-                             forKey:@"Write that word"];
+    // start the remaining part of the loading animation
+    self.loadingShape.timeOffset = 0.0;
+    self.loadingShape.speed = 1.0;
+    self.loadingShape.beginTime = [self.loadingShape convertTime:CACurrentMediaTime() fromLayer:nil] - 1.0;
     
     CGFloat contentInset = self.collectionView.contentInset.top;
     // inset the top to keep the loading indicator on screen
@@ -165,10 +147,11 @@
         self.loadingIndicator.alpha = 0.0;
     } completion:^{
         // reset everything
-        [self.loadingShape removeAllAnimations];
         self.loadingIndicator.alpha = 1.0;
         self.collectionView.scrollEnabled = YES;
-        self.pullToRefreshShape.timeOffset = 0.0; // back to the start
+        self.loadingShape.timeOffset = 0.0; // back to the start
+        self.loadingShape.speed = 0.0;
+        self.loadingShape.beginTime = 0.0;
         self.isLoading = NO;
     }];
 }
@@ -299,15 +282,9 @@
     });
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
 #pragma mark - Path data
 
-- (CGPathRef)loadPath
+- (CGPathRef)loadingPath
 {
     CGMutablePathRef path = CGPathCreateMutable();
     // load
@@ -345,13 +322,6 @@
     CGPathAddCurveToPoint(path, NULL, 128.092777, 46.2753909,  130.551236, 50.2217745, 135.211914, 46.2753906);
     CGPathAddCurveToPoint(path, NULL, 146.745113, 36.5097659,  142.116211, 40.75,      142.116211, 40.75);
     
-    CGAffineTransform t = CGAffineTransformMakeScale(0.7, 0.7); // It was slighly to big and I didn't feel like redoing it :D
-    return CGPathCreateCopyByTransformingPath(path, &t);
-}
-
-- (CGPathRef)ingPath
-{
-    CGMutablePathRef path = CGPathCreateMutable();
     // ing (minus dot)
     CGPathMoveToPoint(path,     NULL, 139.569336, 42.9423837);
     CGPathAddCurveToPoint(path, NULL, 139.569336, 42.9423837, 149.977539, 32.9609375, 151.100586, 27.9072266);
@@ -378,7 +348,7 @@
     CGPathAddCurveToPoint(path, NULL, 153.736328, 14.953125,  157.674805, 12.8178626, 155.736328, 10.2929688);
     CGPathAddCurveToPoint(path, NULL, 153.797852, 7.76807493, 151.408203, 12.2865614, 152.606445, 14.9531252);
     
-    CGAffineTransform t = CGAffineTransformMakeScale(0.7, 0.7); // It was slighly to big and I didn't feel like redoing it :D
+    CGAffineTransform t = CGAffineTransformMakeScale(0.7, 0.7); // It was slightly too big and I didn't feel like redoing it :D
     return CGPathCreateCopyByTransformingPath(path, &t);
 }
 
